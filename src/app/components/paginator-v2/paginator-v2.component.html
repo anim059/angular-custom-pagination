@@ -1,0 +1,23 @@
+<div class="flex items-center justify-center md:justify-start my-3 gap-2">
+    <button class="font-[400] text-sm leading-[16.8px] py-[8px] md:py-[10px] px-[6px] md:px-[13px] rounded-[8px] w-fit 
+    shadow-sm hover:bg-[#dfdfdf]" (click)="previousPage()" [ngClass]="isFirstPage() ? 
+        'bg-[#dfdfdf] text-[#bdbdbd] border border-[#cfcfcf] cursor-not-allowed' 
+        : 'bg-[#e6e6e6] text-[#757575] cursor-pointer'" [disabled]="isFirstPage()">
+        Prev</button>
+    @for (item of limitOptions; track $index; let first = $first; let last = $last) {
+    <button class="font-[500] text-sm leading-[16.8px] min-w-[24px] md:min-w-[40px] min-h-[35px] md:min-h-[40px] w-fit 
+    rounded-[0px] md:rounded-[8px]" [ngClass]="item.label === '...' ? '' 
+        : item.value == this.getCurrentPage()  
+        ? 'border-b md:border border-b-black md:border-[#ffffff] bg-[#ffffff] md:bg-black text-black
+         md:text-[#ffffff] cursor-pointer p-[1px]' 
+        : 'text-[#757575] md:bg-[#F4F4F4]  cursor-pointer hover:bg-[#2e2e2e] hover:text-white p-[1px]'"
+        (click)="item.label === '...' ? '' : setCurrentPage(item.value)">
+        {{item.label}}
+    </button>
+    }
+    <button class="text-[#757575] font-[400] text-sm leading-[16.8px] py-[8px] md:py-[10px] px-[6px] md:px-[13px] rounded-[8px] w-fit 
+    shadow-sm bg-[#F4F4F4] hover:bg-[#dfdfdf]" (click)="nextPage()" [ngClass]="isLastPage() ? 
+        'bg-[#dfdfdf] text-[#bdbdbd] border border-[#cfcfcf] cursor-not-allowed' 
+        : 'bg-[#e6e6e6] text-[#757575] cursor-pointer'">
+        Next</button>
+</div>
