@@ -94,7 +94,7 @@ export class PaginatorComponent implements OnInit, OnChanges {
     let i = 1;
     while (i <= paginationRange && i <= totalPages) {
       let label = "";
-      let pageNumber = this.createPageNumber(i, currentPage, totalPages, paginationRange);
+      let pageNumber = this.createPageNumber(i, currentPage, halfway, totalPages, paginationRange);
       let openingEllipsesNeeded = ((i == 2) && (isEnd || isMId));
       let closingEllipsesNeeded = ((i == paginationRange - 1) && (isStart || isMId));
       if (ellipsesNeeded && (openingEllipsesNeeded || closingEllipsesNeeded)) {
@@ -111,17 +111,16 @@ export class PaginatorComponent implements OnInit, OnChanges {
     return pages;
   }
 
-  createPageNumber(i: number, currentPage: number, totalPages: number, paginationRange: number): number {
-    let halfway = Math.ceil(paginationRange / 2);
+  createPageNumber(i: number, currentPage: number, halfWay: number,  totalPages: number, paginationRange: number): number {
     if (i === paginationRange) {
       return totalPages;
     } else if (i === 1) {
       return i;
     } else if (paginationRange < totalPages) {
-      if (totalPages - halfway < currentPage) {
+      if (totalPages - halfWay < currentPage) {
         return totalPages - paginationRange + i;
-      } else if (halfway < currentPage) {
-        return currentPage - halfway + i;
+      } else if (halfWay < currentPage) {
+        return currentPage - halfWay + i;
       } else {
         return i;
       }

@@ -3,8 +3,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { CommonModule } from '@angular/common';
 
 interface IPage {
-  label: string;
-  value: any;
+  label: number;
+  value: number;
 }
 
 @Component({
@@ -31,10 +31,11 @@ export class PaginatorV2Component implements OnInit, OnChanges {
   limitOptions: IPage[] = [];
 
   ngOnInit(): void {
-
+    this.limitOptions = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
   }
-  ngOnChanges(changes: SimpleChanges): void {
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.limitOptions = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
   }
 
   isFirstPage(): boolean {
@@ -72,6 +73,38 @@ export class PaginatorV2Component implements OnInit, OnChanges {
 
   setCurrentPage(page: number) {
     this.currentPage = page;
+    this.limitOptions = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
+    this.pageChange.emit(Number(page));
+  }
+
+  createPageRange(currentPage: number, itemsPerPage: number, totalItems: number, paginationRange: number): IPage[] {
+    let pages: IPage[] = [];
+    let totalPages = Math.max(Math.ceil(totalItems / itemsPerPage), 1);
+    let halfWay = Math.ceil(paginationRange / 2)
+
+    let isEnd = currentPage > halfWay;
+    let i = 1;
+    while (i <= paginationRange && i <= totalPages) {
+      let pageNumber = this.getPageNumber(i, currentPage, halfWay, totalPages, paginationRange);
+      pages.push({
+        label: pageNumber,
+        value: pageNumber
+      });
+      i++;
+    }
+    return pages;
+  }
+
+  getPageNumber(i: number, currentPage: number, halfWay: number, totalPages: number, paginationRange: number): number {
+    if (halfWay < currentPage) {
+      let remainingPage = totalPages - currentPage;
+      if (remainingPage < paginationRange) {
+        return Math.max((currentPage + i) - (paginationRange - remainingPage), 1);
+      } else {
+        return Math.max((currentPage + i) - 1, 1);
+      }
+    }
+    return Math.max(i, 1);
   }
 
 }
