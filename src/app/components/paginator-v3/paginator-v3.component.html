@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center md:justify-start my-3 gap-2">
+<div class="flex items-end justify-center md:justify-start my-3 gap-2">
     <button
         class="font-[400] text-sm leading-[16.8px] py-[8px] md:py-[10px] px-[6px] md:px-[13px] rounded-[8px] w-fit shadow-sm hover:bg-[#dfdfdf]"
         (click)="previousPage()" [ngClass]="isFirstPage() ? 'bg-[#dfdfdf] text-[#bdbdbd] border border-[#cfcfcf] cursor-not-allowed' 
@@ -20,7 +20,15 @@
         (click)="nextPage()" [ngClass]="isLastPage() ? 'bg-[#dfdfdf] text-[#bdbdbd] border border-[#cfcfcf] cursor-not-allowed' 
         : 'bg-[#e6e6e6] text-[#757575] cursor-pointer'">
         Next</button>
+
+    <div class="w-full max-w-xs mx-auto ml-6">
+        <label>Result Per Page</label>
+        <select [(ngModel)]="limit" (change)="changeLimit($event)"
+            class="block w-[100px] h-[40px] border border-gray-800 rounded-md p-1 mt-1
+            shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm focus:outline-none">
+            <option *ngFor="let option of limitOptions" [value]="option">
+                {{ option }}
+            </option>
+        </select>
+    </div>
 </div>
-<h1 class="text-center font-medium">
-    {{(currentPage*itemsPerPage) - itemsPerPage + 1}} - {{currentPage*itemsPerPage}} of {{totalItems}}
-</h1>

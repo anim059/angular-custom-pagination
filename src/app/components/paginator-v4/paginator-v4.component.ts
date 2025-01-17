@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
 
@@ -8,14 +9,13 @@ interface IPage {
 }
 
 @Component({
-  selector: 'paginator-v1',
+  selector: 'paginator-v4',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './paginator.component.html',
-  styleUrl: './paginator.component.scss'
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './paginator-v4.component.html',
+  styleUrl: './paginator-v4.component.scss'
 })
-
-export class PaginatorComponent implements OnInit, OnChanges {
+export class PaginatorV4Component implements OnInit, OnChanges {
 
   @Input() currentPage: number = 1;
 
@@ -30,6 +30,8 @@ export class PaginatorComponent implements OnInit, OnChanges {
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
   pageNumbers: IPage[] = [];
+
+  pageInputField: FormControl = new FormControl<number>(1, [Validators.min(1), Validators.max(this.getLastPage())]);
 
   constructor() { }
 
@@ -63,8 +65,16 @@ export class PaginatorComponent implements OnInit, OnChanges {
     return this.getLastPage() === this.getCurrentPage();
   }
 
-  setCurrentPage(page: number) {
-    this.currentPage = page;
+  setCurrentPage(page: number | string) {
+    this.currentPage = typeof(page) === "string" ? parseInt(page) : page;
+    if(this.currentPage < 1) {
+      this.currentPage = 1
+      this.pageInputField.setValue(1);
+    }
+    if(this.currentPage > this.getLastPage()) {
+      this.currentPage = this.getLastPage();
+      this.pageInputField.setValue(this.getLastPage());
+    }
     this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
     this.pageChange.emit(Number(page));
   }

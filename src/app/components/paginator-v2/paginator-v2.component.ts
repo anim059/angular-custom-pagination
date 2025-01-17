@@ -28,14 +28,14 @@ export class PaginatorV2Component implements OnInit, OnChanges {
 
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
-  limitOptions: IPage[] = [];
+  pageNumbers: IPage[] = [];
 
   ngOnInit(): void {
-    this.limitOptions = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
+    this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.limitOptions = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
+    this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
   }
 
   isFirstPage(): boolean {
@@ -73,7 +73,7 @@ export class PaginatorV2Component implements OnInit, OnChanges {
 
   setCurrentPage(page: number) {
     this.currentPage = page;
-    this.limitOptions = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
+    this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
     this.pageChange.emit(Number(page));
   }
 

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface IPage {
   label: string;
@@ -8,14 +9,13 @@ interface IPage {
 }
 
 @Component({
-  selector: 'paginator-v1',
+  selector: 'paginator-v3',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './paginator.component.html',
-  styleUrl: './paginator.component.scss'
+  imports: [CommonModule, FormsModule],
+  templateUrl: './paginator-v3.component.html',
+  styleUrl: './paginator-v3.component.scss'
 })
-
-export class PaginatorComponent implements OnInit, OnChanges {
+export class PaginatorV3Component implements OnInit, OnChanges {
 
   @Input() currentPage: number = 1;
 
@@ -25,11 +25,13 @@ export class PaginatorComponent implements OnInit, OnChanges {
 
   @Input() itemsPerPage: number = 15;
 
-  @Input() limit: number = 7;
+  @Input() limitOptions: number[] = [];
 
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
   pageNumbers: IPage[] = [];
+
+  limit: number = 10;
 
   constructor() { }
 
@@ -38,6 +40,11 @@ export class PaginatorComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
+  }
+
+  changeLimit(event: any) {
+    this.limit = event.target.value;
     this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
   }
 
@@ -111,7 +118,7 @@ export class PaginatorComponent implements OnInit, OnChanges {
     return pages;
   }
 
-  createPageNumber(i: number, currentPage: number, halfWay: number,  totalPages: number, paginationRange: number): number {
+  createPageNumber(i: number, currentPage: number, halfWay: number, totalPages: number, paginationRange: number): number {
     if (i === paginationRange) {
       return totalPages;
     } else if (i === 1) {
@@ -136,5 +143,5 @@ export class PaginatorComponent implements OnInit, OnChanges {
     }
     return 'text-[#757575] md:bg-[#F4F4F4]  cursor-pointer hover:bg-[#2e2e2e] hover:text-white p-[1px]';
   }
-  
+
 }

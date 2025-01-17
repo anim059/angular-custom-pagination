@@ -1,0 +1,28 @@
+<div class="flex items-center justify-center md:justify-start my-3">
+    <button class="font-[400] text-sm leading-[16.8px] mr-1 py-[8px] md:py-[10px] px-[6px] md:px-[13px] w-fit min-h-[35px] md:min-h-[40px]
+    shadow-sm transition-all duration-300 ease-in-out rounded-s" (click)="previousPage()" [ngClass]="isFirstPage() ? 
+        'bg-[#dfdfdf] text-[#bdbdbd] border border-black cursor-not-allowed' 
+        : 'hover:bg-black bg-black text-[#ffffff] cursor-pointer'" [disabled]="isFirstPage()">
+        <svg width="20" height="20" viewBox="0 0 1024 1024" class="icon" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" [ngClass]="isFirstPage() ? 'fill-black' : 'fill-white'">
+            <path d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z" />
+        </svg>
+    </button>
+    @for (item of pageNumbers; track $index; let first = $first; let last = $last) {
+    <button class="font-[500] text-sm leading-[16.8px] min-w-[34px] md:min-w-[50px] min-h-[35px] md:min-h-[40px] w-fit 
+     transition-all duration-300 ease-in-out" [ngClass]="item.value == this.getCurrentPage()  
+        ? 'hover:bg-black bg-black text-[#ffffff] cursor-pointer p-[1px]' 
+        : 'border border-black cursor-pointer p-[1px]'" (click)="setCurrentPage(item.value)">
+        {{item.label}}
+    </button>
+    }
+    <button class="font-[400] text-sm leading-[16.8px] ml-1 py-[8px] md:py-[10px] px-[6px] md:px-[13px] w-fit min-h-[35px] md:min-h-[40px]
+    shadow-sm transition-all duration-300 ease-in-out rounded-e" (click)="nextPage()" [ngClass]="isLastPage() ? 
+        'bg-[#dfdfdf] text-[#bdbdbd] border border-black cursor-not-allowed' 
+        : 'hover:bg-black bg-black text-[#ffffff] cursor-pointer'" [disabled]="isLastPage()">
+        <svg width="20" height="20" viewBox="0 0 1024 1024" class="icon" version="1.1"
+            [ngClass]="isLastPage() ? 'fill-black' : 'fill-white'" xmlns="http://www.w3.org/2000/svg">
+            <path d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z" />
+        </svg>
+    </button>
+</div>

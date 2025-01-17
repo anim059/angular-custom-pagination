@@ -1,4 +1,4 @@
-<div class="m-20 flex flex-col gap-10">
+<div class="m-20 flex flex-col items-center gap-10">
     <div>
         <h2 class="font-bold">Version 1</h2>
         <paginator-v1 [currentPage]="1" [totalItems]="220" [itemsPerPage]="10" [limit]="9"
@@ -8,5 +8,20 @@
         <h2 class="font-bold">Version 2</h2>
         <paginator-v2 [currentPage]="1" [totalItems]="220" [itemsPerPage]="10" [limit]="9"
             (pageChange)="onPageChange($event)"></paginator-v2>
+    </div>
+    <div>
+        <h2 class="font-bold">Version 3</h2>
+        <paginator-v3 [currentPage]="1" [totalItems]="220" [itemsPerPage]="10" [limitOptions]="[5,10,15,20]"
+            (pageChange)="onPageChange($event)"></paginator-v3>
+    </div>
+    <div>
+        <h2 class="font-bold">Version 4</h2>
+        <paginator-v4 [currentPage]="1" [totalItems]="220" [itemsPerPage]="10" [limit]="9"
+            (pageChange)="onPageChange($event)"></paginator-v4>
+    </div>
+    <div>
+        <h2 class="font-bold">Version 5</h2>
+        <paginator-v5 [currentPage]="1" [totalItems]="220" [itemsPerPage]="10" [limit]="9"
+            (pageChange)="onPageChange($event)"></paginator-v5>
     </div>
 </div>

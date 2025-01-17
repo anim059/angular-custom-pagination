@@ -20,7 +20,13 @@
         (click)="nextPage()" [ngClass]="isLastPage() ? 'bg-[#dfdfdf] text-[#bdbdbd] border border-[#cfcfcf] cursor-not-allowed' 
         : 'bg-[#e6e6e6] text-[#757575] cursor-pointer'">
         Next</button>
+    <div class="flex gap-2 items-center ml-4">
+        <label class="font-medium text-base">Page</label>
+        <input type="text" class="w-[80px] border border-gray-300 rounded-md py-1 px-2" min="1" [max]="totalItems"
+        [formControl]="pageInputField" />
+        <button class="bg-[#376cff] text-white rounded-md py-1 px-2" (click)="setCurrentPage(pageInputField.value)">Go</button>
+    </div>
 </div>
-<h1 class="text-center font-medium">
+<h1 class="font-medium">
     {{(currentPage*itemsPerPage) - itemsPerPage + 1}} - {{currentPage*itemsPerPage}} of {{totalItems}}
 </h1>
