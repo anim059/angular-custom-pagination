@@ -33,11 +33,11 @@ export class PaginatorV5Component implements OnInit, OnChanges {
   currActivePageIndex: number = 0;
 
   ngOnInit(): void {
-    this.pageNumbers = this.createForwardPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
+    this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit, 'forward');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.pageNumbers = this.createForwardPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
+    this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit, 'forward');
   }
 
   isFirstPage(): boolean {
@@ -66,8 +66,17 @@ export class PaginatorV5Component implements OnInit, OnChanges {
     this.setCurrentPage(this.getCurrentPage() + 1);
     if (this.currActivePageIndex === -1) {
       this.currActivePageIndex = this.currActivePageIndex === -1 ? 0 : this.currActivePageIndex + 1
-      this.pageNumbers = this.createForwardPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
+      this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit, 'forward');
     }
+  }
+
+  nextPageNumbersArray(){
+    if(this.pageNumbers[this.limit - 1].value === this.getLastPage()){
+      return;
+    }
+    this.currentPage = this.pageNumbers[this.limit - 1].value;
+    this.nextPage();
+    this.setCurrentPage(this.pageNumbers[0].value);
   }
 
   previousPage() {
@@ -78,8 +87,16 @@ export class PaginatorV5Component implements OnInit, OnChanges {
     if (this.currActivePageIndex === -1) {
       this.currActivePageIndex =  this.currActivePageIndex === -1
         ? this.pageNumbers.length - 1 : this.currActivePageIndex - 1;
-      this.pageNumbers = this.createBackwardPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit);
+      this.pageNumbers = this.createPageRange(this.currentPage, this.itemsPerPage, this.totalItems, this.limit, 'backward');
     }
+  }
+
+  previousPageNumbersArray(){
+    if(this.pageNumbers[0].value === 1){
+      return;
+    }
+    this.currentPage = this.pageNumbers[0].value;
+    this.previousPage();
   }
 
   setCurrentPage(page: number) {
@@ -88,14 +105,15 @@ export class PaginatorV5Component implements OnInit, OnChanges {
     this.pageChange.emit(Number(page));
   }
 
-  createForwardPageRange(currentPage: number, itemsPerPage: number, totalItems: number, paginationRange: number, type?: string): IPage[] {
+  createPageRange(currentPage: number, itemsPerPage: number, totalItems: number, paginationRange: number, type?: string): IPage[] {
     let pages: IPage[] = [];
     let totalPages = Math.max(Math.ceil(totalItems / itemsPerPage), 1);
     let halfWay = Math.ceil(paginationRange / 2)
 
     let i = 1;
     while (i <= paginationRange && i <= totalPages) {
-      let pageNumber = this.getForwardPageNumber(i, currentPage, halfWay, totalPages, paginationRange);
+      let pageNumber = type === 'forward' ? this.getForwardPageNumber(i, currentPage, halfWay, totalPages, paginationRange) 
+      : this.getBackwardPageNumber(i, currentPage, halfWay, totalPages, paginationRange); ;
       pages.push({
         label: pageNumber,
         value: pageNumber
@@ -103,7 +121,7 @@ export class PaginatorV5Component implements OnInit, OnChanges {
       i++;
     }
     this.currActivePageIndex = pages.findIndex(page => page.value == this.currentPage);
-    return pages;
+    return type === 'forward' ? pages : [...pages].reverse() ;
   }
 
   getForwardPageNumber(i: number, currentPage: number, halfWay: number, totalPages: number, paginationRange: number): number {
@@ -116,24 +134,6 @@ export class PaginatorV5Component implements OnInit, OnChanges {
       }
     }
     return Math.max(i, 1);
-  }
-
-  createBackwardPageRange(currentPage: number, itemsPerPage: number, totalItems: number, paginationRange: number, type?: string): IPage[] {
-    let pages: IPage[] = [];
-    let totalPages = Math.max(Math.ceil(totalItems / itemsPerPage), 1);
-    let halfWay = Math.ceil(paginationRange / 2)
-
-    let i = 1;
-    while (i <= paginationRange && i <= totalPages) {
-      let pageNumber = this.getBackwardPageNumber(i, currentPage, halfWay, totalPages, paginationRange);
-      pages.push({
-        label: pageNumber,
-        value: pageNumber
-      });
-      i++;
-    }
-    const revPages = [...pages].reverse();
-    return revPages;
   }
 
   getBackwardPageNumber(i: number, currentPage: number, halfWay: number, totalPages: number, paginationRange: number): number {

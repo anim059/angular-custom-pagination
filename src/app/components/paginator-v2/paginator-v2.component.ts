@@ -82,7 +82,6 @@ export class PaginatorV2Component implements OnInit, OnChanges {
     let totalPages = Math.max(Math.ceil(totalItems / itemsPerPage), 1);
     let halfWay = Math.ceil(paginationRange / 2)
 
-    let isEnd = currentPage > halfWay;
     let i = 1;
     while (i <= paginationRange && i <= totalPages) {
       let pageNumber = this.getPageNumber(i, currentPage, halfWay, totalPages, paginationRange);

@@ -96,15 +96,13 @@ export class PaginatorV3Component implements OnInit, OnChanges {
     let isEnd = totalPages - halfway < currentPage;
     let isMId = !isStart && !isEnd;
 
-    let ellipsesNeeded = totalPages > paginationRange;
-
     let i = 1;
     while (i <= paginationRange && i <= totalPages) {
       let label = "";
       let pageNumber = this.createPageNumber(i, currentPage, halfway, totalPages, paginationRange);
-      let openingEllipsesNeeded = ((i == 2) && (isEnd || isMId));
-      let closingEllipsesNeeded = ((i == paginationRange - 1) && (isStart || isMId));
-      if (ellipsesNeeded && (openingEllipsesNeeded || closingEllipsesNeeded)) {
+      let openingEllipses = ((i == 2) && (isEnd || isMId));
+      let closingEllipses = ((i == paginationRange - 1) && (isStart || isMId));
+      if ((totalPages > paginationRange) && (openingEllipses || closingEllipses)) {
         label = '...';
       } else {
         label = pageNumber.toString();

@@ -16,6 +16,5 @@ export class AppComponent {
   title = 'customize-paginator';
 
   onPageChange(page: number) {
-
   }
 }
