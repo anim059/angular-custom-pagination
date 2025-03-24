@@ -11,7 +11,6 @@ This repository contains a custom paginator component built for Angular applicat
 - Customize the look and feel using CSS or SCSS.
 
 ## Demo
-![Alt text](demo.jpg)
 <img src="/public/images/demo.jpg" alt="alt text" title="Sample image caption">
 
 ### Contact
